@@ -1,15 +1,6 @@
 [
   
       {
-        "id": "1",
-        "nombre": "Ventilador Color Azul Cian Omega",
-        "precio": "31.09",
-        "disponible": "1",
-        "categoria": "Electrodomésticos",
-        "imagen": "_x3lu8upIx.jpg",
-        "descripcion": "<b>Descubre nuestro increíble producto!</b>  Con diseño elegante y funcionalidad excepcional, este producto es perfecto para aquellos que buscan calidad y estilo en uno solo. <b>Rendimiento excepcional:</b> Con un potente motor y tecnología de vanguardia, este producto ofrece un rendimiento óptimo en cada uso, brindándote resultados impecables en todo momento. <b>Durabilidad garantizada:</b> Fabricado con materiales de alta calidad, este producto está diseñado para resistir el paso del tiempo. ¡No tendrás que preocuparte por reemplazarlo constantemente!. <b>Versatilidad incomparable:</b> Este producto es perfecto para múltiples usos. Desde tareas cotidianas hasta proyectos más exigentes, se adapta a todas tus necesidades, convirtiéndose en tu aliado indispensable."
-      },
-      {
         "id": "2",
         "nombre": "Ventilador Recargable de 16\" V916RS Universal Royal",
         "precio": "69.62",
