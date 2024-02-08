@@ -1,7 +1,163 @@
 ---
 import Layout from "../layout/Layout.astro"
+import PRODUCTOS from '../data/productos.json';
+const categorias = [...new Set(PRODUCTOS.map((producto) => producto.categoria))];
+let catSeleccionada=categorias[2];
+const productosFiltrados = PRODUCTOS.filter((producto) => producto.categoria === catSeleccionada);
+const ruta="/astrobootstraptuzona/img/prod/";
 ---
 
-<Layout>
-	<h1 class="text-center py-5">Tienda</h1>
+<Layout titulo="Tienda">
+    <div class="bg-info">
+        <h3 class=" text-white fw-bold sombra text-center pt-5"><span class="text-danger  fw-bold">A</span><span class="text-warning  fw-bold">R</span> Market<span class="text-warning fs-2 fw-bold">.com</span></h3>
+        <div class="text-center py-5" id="escucharCategorias">
+            {
+                categorias.map((cat)=>(
+                    <a class="btn btn-outline-danger me-2" href="#" id={cat}>{cat}</a>
+                ))
+        
+            }
+        </div>
+        <div class="container">
+            <div class="row" id="mostrarProductos">
+                {
+                    productosFiltrados.map((prod) => (
+                        <div class="col-lg-4 col-xl-3 mb-4">
+                            <div class="card h-100" data-bs-theme="dark">
+                                <div class="card-header p-0">
+                                    <img src={ruta + prod.imagen} alt="" class="img-fluid">
+                                </div>
+                                <div class="card-body text-center d-flex flex-column justify-content-between">
+                                    {prod.nombre}
+                                    <h6 class="pt-3 text-danger"><b>Precio: </b>{prod.precio}$</h6>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="#" class="btn btn-outline-success btn-sm" id={prod.id} name="detalle" data-bs-toggle="modal" data-bs-target="#detalleModal">Detalle</a>
+                                    <a href="#" class="btn btn-outline-danger btn-sm" id={prod.id} name="comprar">Comprar</a>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                }
+
+            </div>
+
+        </div>
+        
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Detalle del Producto</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <div class="row" id="mostrarDetalle">
+                    <div class="col-md-4">
+                        <img src="img/prod/_2JGn9Euqj.jpg" alt="" class="img-fluid img-thumbnail">
+                    </div>
+                    <div class="col-md-8">
+                        <h4><b>Removedor de Pintura 70-4 SQ 354ml</b></h4>
+                        <p class="lead"><b>Categoria: </b>Automotriz<br/>
+                    <b>Disponible: </b>2</p>
+                        <p class="">Descripcion</p>
+                        <h4 class=""><b>Precio: </b>2$</h4>
+                    </div>
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
+        </div>
+    </div>
 </Layout>
+
+<style>
+    .btn, .card{
+        box-shadow: 3px 3px 6px #202020;
+    }
+    h3{
+        text-shadow: 0px 2px 4px #202020;
+    } 
+    .card:hover{
+         box-shadow: 6px 6px 12px #202020;
+    }
+  
+</style>
+
+<script>
+    import PRODUCTOS from '../data/productos.json';
+    const escucharCategoriasEl = document.querySelector("#escucharCategorias");
+    const mostrarProductosEl = document.querySelector("#mostrarProductos");
+    const mostrarDetalleEl = document.querySelector("#mostrarDetalle");
+    const ruta="/astrobootstraptuzona/img/prod/";
+
+
+
+    escucharCategoriasEl.addEventListener("click",(e)=>{
+        let cat=e.target.id;
+        const productosFiltrados = PRODUCTOS.filter((producto) => producto.categoria === cat);
+        let valor="";
+
+        
+           
+                productosFiltrados.map((prod) => (
+                    valor+=`
+                        <div class="col-lg-4 col-xl-3 mb-4">
+                            <div class="card h-100" data-bs-theme="dark">
+                                <div class="card-header p-0">
+                                    <img src=${ruta + prod.imagen} alt="" class="img-fluid">
+                                </div>
+                                <div class="card-body text-center d-flex flex-column justify-content-between">
+                                    ${prod.nombre}
+                                    <h6 class="pt-3 text-danger"><b>Precio: </b>${prod.precio}$</h6>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="#" class="btn btn-outline-success btn-sm" id=${prod.id} name="detalle" data-bs-toggle="modal" data-bs-target="#detalleModal">Detalle</a>
+                                    <a href="#" class="btn btn-outline-danger btn-sm" id=${prod.id} name="comprar">Comprar</a>
+                                    </div>
+                            </div>
+                        </div> 
+                        `
+          ))
+
+         mostrarProductosEl.innerHTML=valor;
+         
+    })
+
+    mostrarProductosEl.addEventListener("click",(e)=>{
+        e.preventDefault();
+        if(e.target && e.target.tagName==="A"){
+            detalle(e.target.id)
+        }   
+    })
+    function detalle(id){
+        const resultado = PRODUCTOS.find(producto => producto.id === id);
+        console.log(resultado);
+        let descripcion=agregarSaltoDeLinea(resultado.descripcion);
+        mostrarDetalleEl.innerHTML=
+        `
+            <div class="col-md-4">
+                    <img src=${ruta+resultado.imagen} alt="" class="img-fluid img-thumbnail shadow">
+                </div>
+                <div class="col-md-8">
+                    <h4><b>${resultado.nombre}</b></h4>
+                    <p class="lead"><b>Categoria: </b>${resultado.categoria}<br/>
+                   <b>Disponible: </b>${resultado.disponible}</p>
+                    <p class="">${descripcion}</p>
+                    <h4 class="text-danger text-end"><b>Precio: </b>${resultado.precio} $</h4>
+                </div>
+        
+        `
+    }
+    function agregarSaltoDeLinea(texto) {
+        return texto.replace(/\./g, ".<br/>");
+    }
+
+</script>
+
