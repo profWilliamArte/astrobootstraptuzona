@@ -4,4 +4,5 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
     site: 'https://profwilliamarte.github.io',
     base: '/astrobootstraptuzona',
+    trailingSlash: "never"
 });
