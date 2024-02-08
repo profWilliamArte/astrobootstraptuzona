@@ -1,0 +1,21 @@
+1) npm create astro@latest
+2) npm install bootstrap@latest
+3) npm i gh-pages
+4) agregar esta linea en el script 
+   "deploy": "gh-pages -d dist"
+5) en astro.config.mjs
+    export default defineConfig({
+        site: 'https://profwilliamarte.github.io',
+        base: '/astrobootstraptuzona',
+    });
+
+// crear el repositorio local y remoto para subir y desplegar el sitio web
+   git init
+   git add .
+   git commit -m "1er Commit"
+   git remote add origin https://github.com/profWilliamArte/astrobootstraptuzona.git
+   git branch -M main
+   git push -u origin main
+   git build
+   git deploy
+   
