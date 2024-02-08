@@ -14,7 +14,7 @@
    });
 
 6) crear las carpetas components y layout
-7) 
+
 
 
 // crear el repositorio local y remoto para subir y desplegar el sitio web

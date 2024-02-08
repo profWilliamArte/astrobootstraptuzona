@@ -1,15 +1,23 @@
 ---
+
 import Layout from "../layout/Layout.astro"
 import PRODUCTOS from '../data/productos.json';
 const categorias = [...new Set(PRODUCTOS.map((producto) => producto.categoria))];
 let catSeleccionada=categorias[2];
+
 const productosFiltrados = PRODUCTOS.filter((producto) => producto.categoria === catSeleccionada);
 const ruta="/astrobootstraptuzona/img/prod/";
+
+
+
+
 ---
 
 <Layout titulo="Tienda">
     <div class="bg-info">
+        
         <h3 class=" text-white fw-bold sombra text-center pt-5"><span class="text-danger  fw-bold">A</span><span class="text-warning  fw-bold">R</span> Market<span class="text-warning fs-2 fw-bold">.com</span></h3>
+        
         <div class="text-center py-5" id="escucharCategorias">
             {
                 categorias.map((cat)=>(
@@ -18,6 +26,7 @@ const ruta="/astrobootstraptuzona/img/prod/";
         
             }
         </div>
+        <h2 class="text-center text-white pb-3" id="titulocategoria">nombre de la categoria</h2>
         <div class="container">
             <div class="row" id="mostrarProductos">
                 {
@@ -81,7 +90,7 @@ const ruta="/astrobootstraptuzona/img/prod/";
     .btn, .card{
         box-shadow: 3px 3px 6px #202020;
     }
-    h3{
+    h3,h2{
         text-shadow: 0px 2px 4px #202020;
     } 
     .card:hover{
@@ -92,42 +101,43 @@ const ruta="/astrobootstraptuzona/img/prod/";
 
 <script>
     import PRODUCTOS from '../data/productos.json';
+    const titulocategoriaEl=document.querySelector("#titulocategoria")
     const escucharCategoriasEl = document.querySelector("#escucharCategorias");
     const mostrarProductosEl = document.querySelector("#mostrarProductos");
     const mostrarDetalleEl = document.querySelector("#mostrarDetalle");
     const ruta="/astrobootstraptuzona/img/prod/";
 
 
-
+    titulocategoriaEl.innerHTML="Electrodomésticos";
     escucharCategoriasEl.addEventListener("click",(e)=>{
+        e.preventDefault();
+        if(e.target && e.target.tagName==="A"){
         let cat=e.target.id;
+        titulocategoriaEl.innerHTML=cat;
         const productosFiltrados = PRODUCTOS.filter((producto) => producto.categoria === cat);
         let valor="";
-
-        
-           
-                productosFiltrados.map((prod) => (
-                    valor+=`
-                        <div class="col-lg-4 col-xl-3 mb-4">
-                            <div class="card h-100" data-bs-theme="dark">
-                                <div class="card-header p-0">
-                                    <img src=${ruta + prod.imagen} alt="" class="img-fluid">
-                                </div>
-                                <div class="card-body text-center d-flex flex-column justify-content-between">
-                                    ${prod.nombre}
-                                    <h6 class="pt-3 text-danger"><b>Precio: </b>${prod.precio}$</h6>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="#" class="btn btn-outline-success btn-sm" id=${prod.id} name="detalle" data-bs-toggle="modal" data-bs-target="#detalleModal">Detalle</a>
-                                    <a href="#" class="btn btn-outline-danger btn-sm" id=${prod.id} name="comprar">Comprar</a>
-                                    </div>
-                            </div>
-                        </div> 
-                        `
+        productosFiltrados.map((prod) => (
+            valor+=`
+                <div class="col-lg-4 col-xl-3 mb-4">
+                    <div class="card h-100" data-bs-theme="dark">
+                        <div class="card-header p-0">
+                            <img src=${ruta + prod.imagen} alt="" class="img-fluid">
+                        </div>
+                        <div class="card-body text-center d-flex flex-column justify-content-between">
+                            <p>${prod.nombre}</p>
+                            <h6 class="pt-3 text-danger"><b>Precio: </b>${prod.precio}$</h6>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="#" class="btn btn-outline-success btn-sm" id=${prod.id} name="detalle" data-bs-toggle="modal" data-bs-target="#detalleModal">Detalle</a>
+                            <a href="#" class="btn btn-outline-danger btn-sm" id=${prod.id} name="comprar">Comprar</a>
+                        </div>
+                    </div>
+                </div> 
+            `
           ))
 
          mostrarProductosEl.innerHTML=valor;
-         
+        }  
     })
 
     mostrarProductosEl.addEventListener("click",(e)=>{
@@ -138,7 +148,6 @@ const ruta="/astrobootstraptuzona/img/prod/";
     })
     function detalle(id){
         const resultado = PRODUCTOS.find(producto => producto.id === id);
-        console.log(resultado);
         let descripcion=agregarSaltoDeLinea(resultado.descripcion);
         mostrarDetalleEl.innerHTML=
         `
